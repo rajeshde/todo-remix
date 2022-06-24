@@ -15,9 +15,7 @@ export default function TodoList({notes}: {notes: Array<Note>}) {
   return (
     <ul>
       {notes.map((note, index) => (
-        <li key={`${note}-${index}`}>
-          <TodoItem item={note} />
-        </li>
+        <TodoItem key={`${note}-${index}`} item={note} />
       ))}
     </ul>
   );
