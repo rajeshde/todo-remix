@@ -8,9 +8,13 @@ import TodoItem from './TodoItem';
 import {getNotes} from '~/models/note.server';
 
 export default function TodoList({notes}: {notes: Array<Note>}) {
+  if (!notes?.length) {
+    return <h4>No todo items yet</h4>;
+  }
+
   return (
     <ul>
-      {notes?.map((note, index) => (
+      {notes.map((note, index) => (
         <li key={`${note}-${index}`}>
           <TodoItem item={note} />
         </li>
