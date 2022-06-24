@@ -28,21 +28,22 @@ export const action: ActionFunction = async ({request}) => {
         );
       }
 
-      await createNote({title});
+      const note = await createNote({title});
+      return null;
     }
     case 'delete': {
       const id = values.id as string;
       await deleteNote({id});
+      return null;
     }
   }
-
-  return null;
 };
 
 export const loader: LoaderFunction = async () => {
   const data: LoaderData = {
     notes: await getNotes(),
   };
+  console.log('data in loader', data);
   return json(data);
 };
 
