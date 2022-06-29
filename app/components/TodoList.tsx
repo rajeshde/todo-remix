@@ -1,13 +1,14 @@
-import type {LoaderFunction} from '@remix-run/node';
-import {json} from '@remix-run/node';
-import {useLoaderData} from '@remix-run/react';
 import type {Note} from '@prisma/client';
+import {useLoaderData} from '@remix-run/react';
 
-import {db} from '~/utils/db.server';
 import TodoItem from './TodoItem';
-import {getNotes} from '~/models/note.server';
 
-export default function TodoList({notes}: {notes: Array<Note>}) {
+type LoaderData = {notes: Array<Note>};
+
+export default function TodoList() {
+  const data = useLoaderData<LoaderData>();
+  const {notes} = data;
+
   if (!notes?.length) {
     return <h4>No todo items yet</h4>;
   }
