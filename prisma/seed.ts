@@ -11,12 +11,12 @@ async function seed() {
 
 seed();
 
-function getNotes(): Array<{title: string}> {
+function getNotes(): Array<{title: string; isComplete: boolean}> {
   return [
-    {title: 'Walk 90 minutes'},
-    {title: 'Buy newspaper'},
-    {title: 'Do Yoga'},
-    {title: 'Have breakfast'},
-    {title: 'Go to work'},
+    {title: 'Morning walk', isComplete: true},
+    {title: 'Breakfast', isComplete: false},
+    {title: 'Buy groceries', isComplete: false},
+    {title: 'Meeting', isComplete: false},
+    {title: 'Lunch', isComplete: false},
   ];
 }
