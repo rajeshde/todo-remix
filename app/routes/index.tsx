@@ -1,41 +1,39 @@
 import type {ActionFunction, LoaderFunction} from '@remix-run/node';
 import {json} from '@remix-run/node';
-import {useActionData} from '@remix-run/react';
+import {Link} from '@remix-run/react';
 
-import {createNote, deleteNote, getNotes, Note} from '~/models/note.server';
-import TodoForm from '~/components/TodoForm';
+import {deleteNote, getNotes, updateNote} from '~/models/note.server';
+import type {Note} from '~/models/note.server';
 import TodoList from '~/components/TodoList';
 
-export type ActionData = {
-  errors?: {
-    title: string;
-  };
-};
 type LoaderData = {notes: Array<Note>};
 
 export const action: ActionFunction = async ({request}) => {
   const formData = await request.formData();
-  const {_action, ...values} = Object.fromEntries(formData);
+  const {_action, item} = Object.fromEntries(formData);
+  const parsedItem = JSON.parse(item);
+  const id = parsedItem.id as string;
 
+  console.log('_action', _action);
   switch (_action) {
-    case 'create': {
-      const {title} = values;
-
-      if (typeof title !== 'string' || title.length === 0) {
-        return json<ActionData>(
-          {errors: {title: 'Title is required'}},
-          {status: 400},
-        );
-      }
-
-      await createNote({title});
+    case 'update': {
+      await updateNote(id, {isCompleted: !parsedItem.isCompleted});
+      return null;
+    }
+    case 'complete': {
+      await updateNote(id, {isCompleted: true});
+      return null;
+    }
+    case 'uncheck': {
+      await updateNote(id, {isCompleted: false});
       return null;
     }
     case 'delete': {
-      const id = values.id as string;
       await deleteNote({id});
       return null;
     }
+    default:
+      return null;
   }
 };
 
@@ -48,9 +46,16 @@ export const loader: LoaderFunction = async () => {
 
 export default function IndexRoute() {
   return (
-    <div>
-      <TodoForm />
-      <TodoList />
+    <div className="center flex w-full flex-col items-center p-4">
+      <Link
+        to="/add"
+        className="px-4 py-3 text-base font-medium text-blue-700 underline"
+      >
+        Add Todo
+      </Link>
+      <div className="w-1/4">
+        <TodoList />
+      </div>
     </div>
   );
 }
