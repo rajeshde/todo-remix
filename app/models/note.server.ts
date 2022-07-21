@@ -8,14 +8,32 @@ export function getNotes() {
   return db.note.findMany();
 }
 
-export function createNote({title}: Pick<Note, 'title'>) {
+export function getNote(id: string) {
+  return db.note.findUnique({where: {id}});
+}
+
+export function createNote({
+  title,
+  isCompleted = false,
+}: Pick<Note, 'title' | 'isCompleted'>) {
   return db.note.create({
-    data: {title},
+    data: {title, isCompleted},
   });
 }
 
 export function deleteNote({id}: Pick<Note, 'id'>) {
   return db.note.deleteMany({
     where: {id},
+  });
+}
+
+type UpdateData = {
+  title?: string;
+  isCompleted?: boolean;
+};
+export function updateNote(id: string, data: UpdateData) {
+  return db.note.update({
+    where: {id},
+    data,
   });
 }
