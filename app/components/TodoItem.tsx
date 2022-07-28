@@ -16,9 +16,14 @@ export default function TodoItem({item}: {item: Note}) {
         <div className="flex h-10 items-center">
           <div className="flex-auto">
             <input
+              type="hidden"
+              name="_action"
+              value={item.isCompleted ? 'uncheck' : 'complete'}
+            />
+            <input
               type="checkbox"
               name="_action"
-              value="update"
+              value={item.isCompleted ? 'uncheck' : 'complete'}
               checked={item.isCompleted}
               onChange={handleOnChange}
               className="mx-2 cursor-pointer"
