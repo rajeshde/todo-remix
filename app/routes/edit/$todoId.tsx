@@ -2,7 +2,7 @@ import {json, redirect} from '@remix-run/node';
 import type {ActionFunction, LoaderFunction} from '@remix-run/node';
 import {getNote, updateNote} from '~/models/note.server';
 import {Form, useActionData, useLoaderData} from '@remix-run/react';
-import {useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 
 export type ActionData = {
   errors?: {
@@ -42,6 +42,10 @@ const EditTodo = () => {
   const data = useLoaderData();
 
   const [updatedTitle, setUpdatedTitle] = useState(data.title);
+
+  useEffect(() => {
+    titleRef.current?.focus();
+  }, []);
 
   return (
     <div className="center flex w-full flex-col items-center p-4">
